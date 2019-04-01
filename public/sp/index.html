@@ -25,6 +25,7 @@
       font-family: 'Roboto', sans-serif;
       font-style: italic;
       letter-spacing: .15em;
+      text-align: center;
       color: #fff;
       transition: opacity .3s ease;
     }
@@ -57,7 +58,15 @@ function init() {
   var HOST = location.origin.replace(/^http/, 'ws');
   var ws = null;
   var isConnected = false;
-  var reConnectInterval = 3000;
+  var reConnectInterval = 5000;
+
+  function delay(ms) {
+    return new Promise(function(res, rej) {
+      setTimeout(function() {
+        res();
+      }, ms);
+    });
+  }
 
   function initWebSocket() {
     ws = new WebSocket(HOST);
@@ -65,7 +74,7 @@ function init() {
     ws.onopen = e => {
       console.log('[ws:open]');
       isConnected = true;
-      eHdg.innerHTML = 'TAP!';
+      eHdg.innerHTML = 'TAP!TAP!TAP!';
     };
 
     ws.onmessage = e => {
@@ -73,12 +82,12 @@ function init() {
       console.log('[ws:message]', data);
     };
     
-    ws.onclose = async e => {
+    ws.onclose = e => {
       console.log('[ws:close]');
       isConnected = false;
       eHdg.innerHTML = 'DISCONNECTED';
-      await delay(reConnectInterval);
-      initWebSocket();
+      delay(reConnectInterval)
+        .then(function() { initWebSocket(); });
     };
   }
   initWebSocket();
@@ -88,8 +97,15 @@ function init() {
 
     if(isClear) return;
 
-    percent -= 0.001;
+    percent = Math.max(0., percent - 0.001);
     eProgress.style.transform = 'scaleY(' + percent + ')';
+
+    if(ws.readyState === ws.CLOSED) {
+      eHdg.innerHTML = 'DISCONNECTED';
+    }
+    else {
+      eHdg.innerHTML = 'TAP!TAP!TAP!<br>' + (percent * 100).toFixed(1) + '%';
+    }
   }
 
   draw();
@@ -102,12 +118,13 @@ function init() {
 
     const rx = (Math.random() * .5 + .5) * 10;
     const ry = (Math.random() * .5 + .5) * 10;
-    eHdg.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+    // eHdg.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
 
     if(percent >= 1) {
       console.log('clear!');
       isClear = true;
       eProgress.style.transform = 'scaleY(1)';
+      eHdg.innerHTML = 'TAP!TAP!TAP!<br>100%';
 
       var data = { address: '/complete' };
       ws.send(JSON.stringify(data));

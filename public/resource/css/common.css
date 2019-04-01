@@ -33,11 +33,20 @@ body {
 .is-disabled .warper_transform-container {
   border-color: rgba(255, 255, 255, 0.0);
 }
-#canvas-container canvas,
-#canvas-container img {
+#canvas-container canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
+}
+
+#img-qr {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+#img-qr.is-hidden {
+  opacity: 0;
 }
 
 .warper .warper_handle {

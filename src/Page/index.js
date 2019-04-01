@@ -10,6 +10,9 @@ export default class Page {
     this.h = config.h;
     const dpr = window.devicePixelRatio;
 
+    this.qrImg = document.getElementById('img-qr');
+    this.qrImg.src = 'https://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=' + location.href + 'sp/';
+
     this.canvas = new Canvas({
       w: this.w,
       h: this.h,
@@ -25,6 +28,12 @@ export default class Page {
     this.reConnectInterval = 3000;
 
     this.initWebSocket();
+  }
+
+  toggleQR() {
+    const cl = this.qrImg.classList;
+    if(cl.contains('is-hidden')) cl.remove('is-hidden');
+    else cl.add('is-hidden');
   }
 
   initWebSocket() {
@@ -66,5 +75,7 @@ export default class Page {
   keyPressed(key) {
     if(key === ' ') this.warper.toggleActive();
     if(key === 'Enter') console.log(this.warper.corners.toString());
+    if(key === 's') this.canvas.toggleSpread();
+    if(key === 'q') this.toggleQR();
   }
 };

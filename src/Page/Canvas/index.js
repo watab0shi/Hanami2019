@@ -281,8 +281,6 @@ export default class Canvas {
 
   mousePressed(x, y) {
     this.mouseMoved(x, y);
-
-    this.toggleSpread();
   }
   mouseReleased(x, y) {
     this.mouseMoved(x, y);
