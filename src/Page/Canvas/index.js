@@ -221,7 +221,7 @@ export default class Canvas {
       rot.array[i] += this.rotationIncs[i];
 
       if(this.isSpread && i % 3 == 1) {// y
-        if(pos.array[i] < -this.w * .5) {
+        if(pos.array[i] < -this.w * .75) {
           const rx = _Math.randFloatSpread(this.w * 1.5);
           const ry = _Math.randFloatSpread(this.w) + this.w;
           const rz = _Math.randFloatSpread(this.w * .5);
