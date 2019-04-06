@@ -7,5 +7,5 @@ AQ2019花見用
 install packages : `npm install`  
 launch development server(loaclhost:3000) : `npm start`  
 launch WebSocket server(localhost:8000) : `npm run ws`  
-publish local server(need to install ngrok) : `ngrok http 8000`  
+publish local server(need to install ngrok) : `cd public/ && ngrok http 8000`  
   
